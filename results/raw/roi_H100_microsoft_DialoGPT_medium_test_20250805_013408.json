@@ -1,0 +1,71 @@
+{
+  "metadata": {
+    "gpu": "H100",
+    "model_name": "microsoft/DialoGPT-medium",
+    "test_mode": true,
+    "timestamp": "2025-08-05T01:33:59.150844",
+    "hostname": "209-20-158-105",
+    "gpu_count": 1,
+    "cuda_version": "12.8",
+    "pytorch_version": "2.7.1+cu128"
+  },
+  "metrics": {
+    "training": {
+      "total_training_time_seconds": 1.4435088634490967,
+      "total_tokens_processed": 600,
+      "tokens_per_second": 415.6538384990375,
+      "mfu_percent": 0.044245083530276653,
+      "memory_usage_gb": 3.009765625,
+      "memory_utilization_percent": 3.7788594759621867,
+      "peak_memory_usage_gb": 3.009765625,
+      "final_loss": 6.138125419616699,
+      "loss_convergence": -0.21410608291625977,
+      "perplexity_score": 243.4302810439454,
+      "cost_per_million_tokens": 1.7977031679065139,
+      "performance_per_dollar": 154.51815557585036,
+      "average_batch_time_seconds": 0.14299004077911376,
+      "time_to_target_accuracy_seconds": null,
+      "cost_to_target_accuracy": null,
+      "target_loss_threshold": 2.5
+    },
+    "inference": {
+      "batch_1": {
+        "average_throughput_tokens_per_sec": 570.7947573015285,
+        "average_latency_ms_per_token": 1.751970499753952,
+        "cost_per_million_tokens": 1.3090908994237556,
+        "performance_per_dollar": 212.1913595916463,
+        "iterations_tested": 4
+      },
+      "batch_4": {
+        "average_throughput_tokens_per_sec": 1616.2244673942869,
+        "average_latency_ms_per_token": 0.618745107203722,
+        "cost_per_million_tokens": 0.4623257705205457,
+        "performance_per_dollar": 600.8269395517796,
+        "iterations_tested": 4
+      }
+    },
+    "financial_projections": {
+      "light_usage": {
+        "year_1_cost_usd": 5681.28,
+        "year_2_cost_usd": 11362.56,
+        "year_3_cost_usd": 17043.84,
+        "tokens_per_year": 3160299264.8758817,
+        "total_hours_per_year": 2112
+      },
+      "medium_usage": {
+        "year_1_cost_usd": 15494.4,
+        "year_2_cost_usd": 30988.8,
+        "year_3_cost_usd": 46483.2,
+        "tokens_per_year": 8618997995.116041,
+        "total_hours_per_year": 5760
+      },
+      "heavy_usage": {
+        "year_1_cost_usd": 23241.6,
+        "year_2_cost_usd": 46483.2,
+        "year_3_cost_usd": 69724.79999999999,
+        "tokens_per_year": 12928496992.67406,
+        "total_hours_per_year": 8640
+      }
+    }
+  }
+}
