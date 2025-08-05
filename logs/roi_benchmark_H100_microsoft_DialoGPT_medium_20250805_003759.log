@@ -1,0 +1,13 @@
+2025-08-05 00:37:59,598 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-05 00:37:59,599 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-05 00:38:09,004 - INFO - Model loaded successfully: 354,823,168 parameters
+2025-08-05 00:38:09,006 - INFO - Model device: cpu
+2025-08-05 00:38:09,007 - INFO - Starting training benchmark
+2025-08-05 00:38:09,011 - INFO - Tokenizing training data
+2025-08-05 00:38:09,020 - INFO - Running 10 training batches
+2025-08-05 00:38:12,476 - INFO - Batch 5/10 - Loss: 5.8591
+2025-08-05 00:38:14,650 - INFO - Batch 10/10 - Loss: 6.2493
+2025-08-05 00:38:15,091 - INFO - Training completed - Tokens/sec: 106.5, MFU: 0.0%
+2025-08-05 00:38:15,096 - INFO - Starting inference benchmark
+2025-08-05 00:38:15,098 - INFO - Testing inference batch size: 1
+2025-08-05 00:38:15,400 - ERROR - Benchmark failed: No CUDA GPUs are available

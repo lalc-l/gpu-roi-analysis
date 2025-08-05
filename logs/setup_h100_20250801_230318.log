@@ -1,0 +1,8 @@
+Setup completed: Fri Aug  1 23:03:18 UTC 2025
+Platform: H100  
+Node: 209-20-158-105
+User: ubuntu
+Environment: environments/venv-h100
+Python: /lambda/nfs/ext-bench-fs/benchmarks/gpu-roi-analysis/environments/venv-h100/bin/python
+GPU Info: NVIDIA H100 PCIe
+Package count: 146

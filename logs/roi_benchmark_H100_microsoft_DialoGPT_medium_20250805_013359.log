@@ -1,0 +1,21 @@
+2025-08-05 01:33:59,158 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-05 01:33:59,159 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-05 01:34:04,519 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-05 01:34:05,887 - INFO - Model loaded successfully: 354,823,168 parameters
+2025-08-05 01:34:05,888 - INFO - Model device: cuda:0
+2025-08-05 01:34:05,891 - INFO - Starting training benchmark
+2025-08-05 01:34:05,895 - INFO - Tokenizing training data
+2025-08-05 01:34:05,906 - INFO - Running 10 training batches
+2025-08-05 01:34:06,823 - INFO - Batch 5/10 - Loss: 5.8018
+2025-08-05 01:34:07,348 - INFO - Batch 10/10 - Loss: 6.1381
+2025-08-05 01:34:07,558 - INFO - Training completed - Tokens/sec: 415.7, MFU: 0.0%
+2025-08-05 01:34:07,559 - INFO - Starting inference benchmark
+2025-08-05 01:34:07,563 - INFO - Testing inference batch size: 1
+2025-08-05 01:34:08,169 - INFO - Batch 1 - Throughput: 570.8 tok/s, Latency: 1.75 ms/tok
+2025-08-05 01:34:08,170 - INFO - Testing inference batch size: 4
+2025-08-05 01:34:08,985 - INFO - Batch 4 - Throughput: 1616.2 tok/s, Latency: 0.62 ms/tok
+2025-08-05 01:34:09,026 - INFO - Results saved to: results/raw/roi_H100_microsoft_DialoGPT_medium_test_20250805_013408.json
+2025-08-05 01:34:09,026 - INFO - CSV summary saved to: results/raw/roi_H100_microsoft_DialoGPT_medium_test_20250805_013408.csv
+2025-08-05 01:34:09,027 - INFO - ROI benchmark completed successfully
+2025-08-05 01:34:09,029 - INFO - Detailed results: results/raw/roi_H100_microsoft_DialoGPT_medium_test_20250805_013408.json
+2025-08-05 01:34:09,030 - INFO - Summary for spreadsheet: results/raw/roi_H100_microsoft_DialoGPT_medium_test_20250805_013408.csv
