@@ -44,6 +44,16 @@ PEAK_FLOPS = {
 # Test model for validation mode
 TEST_MODEL = "microsoft/DialoGPT-medium"
 
+# Complete benchmarking suite of models
+RECOMMENDED_MODELS = [
+    "meta-llama/Llama-3.1-8B-Instruct",
+    "meta-llama/Llama-3.1-70B-Instruct",
+    "Qwen/Qwen3-32B",
+    "meta-llama/LLama-4-Scout-17B-16E-Instruct",
+    "deepseek/DeepSeek-V3-0324",
+    "meta-llama/Llama-4-Maverick-17B-128E-Instruct",
+    "deepseek/DeepSeek-R1-0528"
+]
 
 class GPUMonitor:
     """Monitors GPU metrics during benchmark execution.
@@ -151,9 +161,18 @@ class ROIBenchmark:
         log_dir = Path("logs")
         log_dir.mkdir(exist_ok=True)
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # New naming convention: H100_model_test_01-05_001
+        month_day = datetime.now().strftime("%m-%d")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
-        log_file = log_dir / f"roi_benchmark_{self.gpu}_{model_safe}_{timestamp}.log"
+        
+        # Find next counter by checking existing files
+        counter = 1
+        while True:
+            mode_suffix = "_test" if self.test_mode else ""
+            log_file = log_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.log"
+            if not log_file.exists():
+                break
+            counter += 1
         
         logging.basicConfig(
             level=logging.INFO,
@@ -183,6 +202,7 @@ class ROIBenchmark:
             )
             if self.tokenizer.pad_token is None:
                 self.tokenizer.pad_token = self.tokenizer.eos_token
+            self.tokenizer.padding_side = "left"
             
             # Load model with single GPU placement for fair comparison
             device_map = "cuda:0" if torch.cuda.device_count() > 1 else "auto"
@@ -219,7 +239,11 @@ class ROIBenchmark:
         model_flops_per_token = 6 * self.model_params
         actual_flops_per_second = model_flops_per_token * tokens_per_second
         
-        peak_flops = PEAK_FLOPS.get(self.gpu, PEAK_FLOPS["H100"])
+        # Updated peak FLOPS for better accuracy
+        peak_flops_h100 = 1000e12  # 1000 TFLOPS for bfloat16
+        peak_flops_b200 = 2500e12  # Estimated 2500 TFLOPS for bfloat16
+        
+        peak_flops = peak_flops_b200 if self.gpu == "B200" else peak_flops_h100
         mfu = (actual_flops_per_second / peak_flops) * 100
         
         return min(mfu, 100.0)  # Cap at 100%
@@ -305,29 +329,51 @@ class ROIBenchmark:
         Measures training performance including throughput, memory usage,
         loss convergence, and calculates financial metrics.
         """
+        # Add optimizer for training
+        optimizer = torch.optim.AdamW(self.model.parameters(), lr=1e-4)
+
         logging.info("Starting training benchmark")
         self.model.train()
         
         # Get training dataset
         training_texts = self._get_training_dataset()
         
-        # Tokenize training data
-        logging.info("Tokenizing training data")
-        inputs = self.tokenizer(
-            training_texts,
-            truncation=True,
-            padding=True,
-            max_length=512,
-            return_tensors="pt"
-        )
-        
-        input_ids = inputs.input_ids.to(self.model.device)
-        attention_mask = inputs.attention_mask.to(self.model.device)
-        
-        # Configure training parameters
-        num_batches = 10 if self.test_mode else 25
-        batch_size = len(training_texts) // num_batches
-        
+         # Configure training parameters
+        if self.test_mode:
+            num_batches = 20
+            batch_size = 8
+            max_length = 512
+        else:
+            num_batches = 50  
+            batch_size = 16
+            max_length = 1024
+
+        # Pre-tokenize training data with consistent batch sizes
+        logging.info("Pre-tokenizing training data with optimized batches")
+        all_batches = []
+
+        # Create consistent batches that match your batch_size
+        for i in range(0, len(training_texts), batch_size):
+            batch_texts = training_texts[i:i+batch_size]
+            # Ensure batch is exactly batch_size by repeating texts if needed
+            while len(batch_texts) < batch_size:
+                batch_texts.append(training_texts[0])
+            
+            inputs = self.tokenizer(
+                batch_texts,
+                truncation=True,
+                padding=True,
+                max_length=max_length,  # Use the max_length variable you defined
+                return_tensors="pt"
+            )
+            
+            all_batches.append({
+                'input_ids': inputs.input_ids.to(self.model.device),
+                'attention_mask': inputs.attention_mask.to(self.model.device)
+            })
+
+        logging.info(f"Created {len(all_batches)} batches of size {batch_size}")
+
         # Initialize tracking variables
         total_tokens = 0
         losses = []
@@ -342,15 +388,13 @@ class ROIBenchmark:
         for i in tqdm(range(num_batches), desc="Training batches"):
             batch_start = time.time()
             
-            # Get batch data
-            start_idx = i * batch_size
-            end_idx = min((i + 1) * batch_size, len(training_texts))
-            
-            batch_input_ids = input_ids[start_idx:end_idx]
-            batch_attention = attention_mask[start_idx:end_idx]
+            # Get pre-tokenized batch data
+            batch_data = all_batches[i % len(all_batches)]
+            batch_input_ids = batch_data['input_ids']
+            batch_attention = batch_data['attention_mask']
             
             # Forward pass
-            with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+            with torch.amp.autocast('cuda',dtype=torch.bfloat16):
                 outputs = self.model(
                     input_ids=batch_input_ids,
                     attention_mask=batch_attention,
@@ -359,7 +403,10 @@ class ROIBenchmark:
                 loss = outputs.loss
             
             # Backward pass
+            optimizer.zero_grad()
             loss.backward()
+            optimizer.step()
+
             
             # Track metrics
             batch_end = time.time()
@@ -577,17 +624,25 @@ class ROIBenchmark:
         results_dir = Path("results/raw")
         results_dir.mkdir(parents=True, exist_ok=True)
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        month_day = datetime.now().strftime("%m-%d")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         mode_suffix = "_test" if self.test_mode else ""
+
+        # Find next counter for results files
+        counter = 1
+        while True:
+            json_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.json"
+            csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.csv"
+            if not json_file.exists():
+                break
+            counter += 1
         
-        # Save detailed JSON results
-        json_file = results_dir / f"roi_{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.json"
+        
         with open(json_file, 'w') as f:
             json.dump(self.results, f, indent=2)
         
         # Save CSV summary
-        csv_file = results_dir / f"roi_{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.csv"
+        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.csv"
         self._save_csv_summary(csv_file)
         
         logging.info(f"Results saved to: {json_file}")

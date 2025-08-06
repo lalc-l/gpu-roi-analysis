@@ -1,0 +1,8 @@
+2025-08-06 00:25:51,181 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-06 00:25:51,182 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-06 00:25:53,072 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-06 00:25:54,390 - INFO - Model loaded successfully: 354,823,168 parameters
+2025-08-06 00:25:54,391 - INFO - Model device: cuda:0
+2025-08-06 00:25:54,396 - INFO - Starting training benchmark
+2025-08-06 00:25:54,399 - INFO - Pre-tokenizing training data with optimized batches
+2025-08-06 00:25:54,399 - ERROR - Benchmark failed: local variable 'batch_size' referenced before assignment

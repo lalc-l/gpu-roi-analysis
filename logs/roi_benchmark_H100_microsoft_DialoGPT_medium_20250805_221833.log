@@ -1,0 +1,4 @@
+2025-08-05 22:18:33,589 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-05 22:18:33,590 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-05 22:18:37,613 - ERROR - Failed to load model: Using a `device_map`, `tp_plan`, `torch.device` context manager or setting `torch.set_default_device(device)` requires `accelerate`. You can install it with `pip install accelerate`
+2025-08-05 22:18:37,613 - ERROR - Failed to load model. Exiting.

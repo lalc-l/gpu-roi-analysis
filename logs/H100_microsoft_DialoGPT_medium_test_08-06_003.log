@@ -1,0 +1,10 @@
+2025-08-06 00:27:32,079 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-06 00:27:32,079 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-06 00:27:33,920 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-06 00:27:35,246 - INFO - Model loaded successfully: 354,823,168 parameters
+2025-08-06 00:27:35,247 - INFO - Model device: cuda:0
+2025-08-06 00:27:35,250 - INFO - Starting training benchmark
+2025-08-06 00:27:35,254 - INFO - Pre-tokenizing training data with optimized batches
+2025-08-06 00:27:35,269 - INFO - Created 13 batches of size 8
+2025-08-06 00:27:35,270 - INFO - Running 20 training batches
+2025-08-06 00:27:35,958 - ERROR - Benchmark failed: "_amp_foreach_non_finite_check_and_unscale_cuda" not implemented for 'BFloat16'

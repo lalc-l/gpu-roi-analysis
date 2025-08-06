@@ -1,0 +1,24 @@
+2025-08-06 00:30:08,338 - INFO - Starting ROI benchmark [TEST MODE]: microsoft/DialoGPT-medium on H100
+2025-08-06 00:30:08,339 - INFO - Loading model: microsoft/DialoGPT-medium
+2025-08-06 00:30:11,385 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-06 00:30:12,759 - INFO - Model loaded successfully: 354,823,168 parameters
+2025-08-06 00:30:12,760 - INFO - Model device: cuda:0
+2025-08-06 00:30:12,764 - INFO - Starting training benchmark
+2025-08-06 00:30:12,769 - INFO - Pre-tokenizing training data with optimized batches
+2025-08-06 00:30:12,787 - INFO - Created 13 batches of size 8
+2025-08-06 00:30:12,788 - INFO - Running 20 training batches
+2025-08-06 00:30:14,518 - INFO - Batch 5/20 - Loss: 5.2439
+2025-08-06 00:30:15,052 - INFO - Batch 10/20 - Loss: 3.6746
+2025-08-06 00:30:15,546 - INFO - Batch 15/20 - Loss: 2.9041
+2025-08-06 00:30:16,018 - INFO - Batch 20/20 - Loss: 2.3766
+2025-08-06 00:30:16,230 - INFO - Training completed - Tokens/sec: 297.2, MFU: 0.1%
+2025-08-06 00:30:16,233 - INFO - Starting inference benchmark
+2025-08-06 00:30:16,236 - INFO - Testing inference batch size: 1
+2025-08-06 00:30:16,951 - INFO - Batch 1 - Throughput: 591.3 tok/s, Latency: 1.69 ms/tok
+2025-08-06 00:30:16,951 - INFO - Testing inference batch size: 4
+2025-08-06 00:30:19,161 - INFO - Batch 4 - Throughput: 500.3 tok/s, Latency: 2.00 ms/tok
+2025-08-06 00:30:19,213 - INFO - Results saved to: results/raw/H100_microsoft_DialoGPT_medium_test_08-06_001.json
+2025-08-06 00:30:19,213 - INFO - CSV summary saved to: results/raw/H100_microsoft_DialoGPT_medium_test_08-06_001.csv
+2025-08-06 00:30:19,213 - INFO - ROI benchmark completed successfully
+2025-08-06 00:30:19,216 - INFO - Detailed results: results/raw/H100_microsoft_DialoGPT_medium_test_08-06_001.json
+2025-08-06 00:30:19,216 - INFO - Summary for spreadsheet: results/raw/H100_microsoft_DialoGPT_medium_test_08-06_001.csv
