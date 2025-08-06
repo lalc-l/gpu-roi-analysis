@@ -47,7 +47,7 @@ TEST_MODEL = "microsoft/DialoGPT-medium"
 # Complete benchmarking suite of models
 RECOMMENDED_MODELS = [
     "meta-llama/Llama-3.1-8B-Instruct",
-    "meta-llama/Llama-3.1-70B-Instruct",
+    "meta-llama/Llama-3.3-70B-Instruct",
     "Qwen/Qwen3-32B",
     "meta-llama/LLama-4-Scout-17B-16E-Instruct",
     "deepseek/DeepSeek-V3-0324",
@@ -63,11 +63,7 @@ class GPUMonitor:
     """
     
     def __init__(self):
-        """Initializes GPU monitoring.
-        
-        Raises:
-            RuntimeError: If NVML initialization fails.
-        """
+        """Initializes GPU monitoring."""
         try:
             nvml.nvmlInit()
             self.device_count = nvml.nvmlDeviceGetCount()
@@ -161,7 +157,7 @@ class ROIBenchmark:
         log_dir = Path("logs")
         log_dir.mkdir(exist_ok=True)
         
-        # New naming convention: H100_model_test_01-05_001
+        # Log file naming convention: H100_model_test_01-05_001
         month_day = datetime.now().strftime("%m-%d")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         
@@ -184,14 +180,11 @@ class ROIBenchmark:
         )
         
         mode_str = "TEST MODE" if self.test_mode else "PRODUCTION"
-        logging.info(f"Starting ROI benchmark [{mode_str}]: {self.model_name} on {self.gpu}")
+        logging.info(f"Starting benchmark [{mode_str}]: {self.model_name} on {self.gpu}")
     
     def load_model(self) -> bool:
-        """Loads the specified model and tokenizer.
+        """Loads the specified model and tokenizer."""
         
-        Returns:
-            True if model loading succeeded, False otherwise.
-        """
         logging.info(f"Loading model: {self.model_name}")
         
         try:
@@ -254,9 +247,6 @@ class ROIBenchmark:
         Args:
             texts: List of text samples to evaluate.
             sample_size: Number of samples to use for perplexity calculation.
-            
-        Returns:
-            Perplexity score, or None if calculation fails.
         """
         if not texts:
             return None
