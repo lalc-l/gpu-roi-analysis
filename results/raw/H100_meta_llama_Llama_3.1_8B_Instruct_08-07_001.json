@@ -1,0 +1,78 @@
+{
+  "metadata": {
+    "gpu": "H100",
+    "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+    "test_mode": false,
+    "timestamp": "2025-08-07T00:12:57.579149",
+    "hostname": "209-20-158-105",
+    "gpu_count": 1,
+    "cuda_version": "12.8",
+    "pytorch_version": "2.9.0.dev20250804+cu128"
+  },
+  "metrics": {
+    "training": {
+      "total_training_time_seconds": 19.979052543640137,
+      "total_tokens_processed": 22400,
+      "tokens_per_second": 1121.174287472932,
+      "mfu_percent": 5.40199345976874,
+      "memory_usage_gb": 78.505859375,
+      "memory_utilization_percent": 98.5666817886438,
+      "peak_memory_usage_gb": 78.505859375,
+      "final_loss": 0.1390317678451538,
+      "loss_convergence": 3.6738938093185425,
+      "perplexity_score": 1.0995760661389105,
+      "cost_per_million_tokens": 0.666463930337202,
+      "performance_per_dollar": 416.79341541744685,
+      "average_batch_time_seconds": 0.33787821769714355,
+      "time_to_target_accuracy_seconds": 1.5983242034912108,
+      "cost_to_target_accuracy": 0.0011943033631642659,
+      "target_loss_threshold": 2.5
+    },
+    "inference": {
+      "batch_1": {
+        "average_throughput_tokens_per_sec": 51.15172683517355,
+        "average_latency_ms_per_token": 20.87089502149158,
+        "cost_per_million_tokens": 14.60795692450423,
+        "performance_per_dollar": 19.015511834637007,
+        "iterations_tested": 9
+      },
+      "batch_4": {
+        "average_throughput_tokens_per_sec": 254.70463131411108,
+        "average_latency_ms_per_token": 3.926489709152116,
+        "cost_per_million_tokens": 2.933681332636313,
+        "performance_per_dollar": 94.68573654799668,
+        "iterations_tested": 9
+      },
+      "batch_8": {
+        "average_throughput_tokens_per_sec": 483.7442007762426,
+        "average_latency_ms_per_token": 2.116928963611523,
+        "cost_per_million_tokens": 1.5446639381375284,
+        "performance_per_dollar": 179.83055790938388,
+        "iterations_tested": 9
+      }
+    },
+    "financial_projections": {
+      "light_usage": {
+        "year_1_cost_usd": 5681.28,
+        "year_2_cost_usd": 11362.56,
+        "year_3_cost_usd": 17043.84,
+        "tokens_per_year": 8524512342.514196,
+        "total_hours_per_year": 2112
+      },
+      "medium_usage": {
+        "year_1_cost_usd": 15494.4,
+        "year_2_cost_usd": 30988.8,
+        "year_3_cost_usd": 46483.2,
+        "tokens_per_year": 23248670025.03872,
+        "total_hours_per_year": 5760
+      },
+      "heavy_usage": {
+        "year_1_cost_usd": 23241.6,
+        "year_2_cost_usd": 46483.2,
+        "year_3_cost_usd": 69724.79999999999,
+        "tokens_per_year": 34873005037.558075,
+        "total_hours_per_year": 8640
+      }
+    }
+  }
+}

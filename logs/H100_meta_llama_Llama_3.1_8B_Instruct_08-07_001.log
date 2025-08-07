@@ -1,0 +1,9 @@
+2025-08-07 00:03:45,039 - INFO - Starting benchmark [PRODUCTION]: meta-llama/Llama-3.1-8B-Instruct on H100
+2025-08-07 00:03:45,040 - INFO - Loading model: meta-llama/Llama-3.1-8B-Instruct
+2025-08-07 00:03:45,294 - ERROR - Failed to load model: You are trying to access a gated repo.
+Make sure to have access to it at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct.
+401 Client Error. (Request ID: Root=1-6893ed61-0e8394e01efc604f58cc87a5;837f623f-5a95-4925-bbd7-70278fdfba44)
+
+Cannot access gated repo for url https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct/resolve/main/config.json.
+Access to model meta-llama/Llama-3.1-8B-Instruct is restricted. You must have access to it and be authenticated to access it. Please log in.
+2025-08-07 00:03:45,295 - ERROR - Failed to load model. Exiting.

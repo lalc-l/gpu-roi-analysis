@@ -1,0 +1,32 @@
+2025-08-07 00:12:57,588 - INFO - Starting benchmark [PRODUCTION]: meta-llama/Llama-3.1-8B-Instruct on H100
+2025-08-07 00:12:57,589 - INFO - Loading model: meta-llama/Llama-3.1-8B-Instruct
+2025-08-07 00:13:27,436 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-07 00:13:31,419 - INFO - Model loaded successfully: 8,030,261,248 parameters
+2025-08-07 00:13:31,420 - INFO - Model device: cuda:0
+2025-08-07 00:13:31,424 - INFO - Starting training benchmark
+2025-08-07 00:13:31,428 - INFO - Pre-tokenizing training data with optimized batches
+2025-08-07 00:13:31,505 - INFO - Created 25 batches of size 16
+2025-08-07 00:13:31,506 - INFO - Running 50 training batches
+2025-08-07 00:13:35,995 - INFO - Batch 5/50 - Loss: 0.5244
+2025-08-07 00:13:37,727 - INFO - Batch 10/50 - Loss: 0.3153
+2025-08-07 00:13:39,453 - INFO - Batch 15/50 - Loss: 0.3118
+2025-08-07 00:13:41,160 - INFO - Batch 20/50 - Loss: 0.1923
+2025-08-07 00:13:42,862 - INFO - Batch 25/50 - Loss: 0.1604
+2025-08-07 00:13:44,589 - INFO - Batch 30/50 - Loss: 0.1531
+2025-08-07 00:13:46,298 - INFO - Batch 35/50 - Loss: 0.1416
+2025-08-07 00:13:48,030 - INFO - Batch 40/50 - Loss: 0.1403
+2025-08-07 00:13:49,766 - INFO - Batch 45/50 - Loss: 0.1419
+2025-08-07 00:13:51,484 - INFO - Batch 50/50 - Loss: 0.1390
+2025-08-07 00:13:51,904 - INFO - Training completed - Tokens/sec: 1121.2, MFU: 5.4%
+2025-08-07 00:13:51,908 - INFO - Starting inference benchmark
+2025-08-07 00:13:51,911 - INFO - Testing inference batch size: 1
+2025-08-07 00:14:04,662 - INFO - Batch 1 - Throughput: 51.2 tok/s, Latency: 20.87 ms/tok
+2025-08-07 00:14:04,663 - INFO - Testing inference batch size: 4
+2025-08-07 00:14:14,065 - INFO - Batch 4 - Throughput: 254.7 tok/s, Latency: 3.93 ms/tok
+2025-08-07 00:14:14,065 - INFO - Testing inference batch size: 8
+2025-08-07 00:14:24,000 - INFO - Batch 8 - Throughput: 483.7 tok/s, Latency: 2.12 ms/tok
+2025-08-07 00:14:24,086 - INFO - Results saved to: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_001.json
+2025-08-07 00:14:24,088 - INFO - CSV summary saved to: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_001.csv
+2025-08-07 00:14:24,089 - INFO - ROI benchmark completed successfully
+2025-08-07 00:14:24,090 - INFO - Detailed results: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_001.json
+2025-08-07 00:14:24,091 - INFO - Summary for spreadsheet: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_001.csv

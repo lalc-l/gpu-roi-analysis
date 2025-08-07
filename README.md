@@ -24,6 +24,13 @@ Measure the performance of B200 vs H100 over a comprehensive set of open-source 
     - setup a virtual environment 
 
 5. Version Control:
+    - github:
+    - 
+
+6. Huggingface CLI:
+    - run this in terminal: pip install huggingface_hub
+    - then run hf auth login
+    - generate huggingface token (fine grained w/ repo access), no need for git credential
 
 ### Benchmarking:
 
