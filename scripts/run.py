@@ -15,11 +15,12 @@ import logging
 import math
 import os
 import sys
-import time
 from datetime import datetime
+import time
+os.environ['TZ'] = 'America/California'
+time.tzset()
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-
 import pynvml as nvml
 nvml.nvmlInit()  # Initialize NVML for GPU monitoring
 import pandas as pd
@@ -134,14 +135,13 @@ class ROIBenchmark:
         self.model = None
         self.tokenizer = None
         self.model_params = 0
-        
         # Initialize results structure
         self.results = {
             'metadata': {
                 'gpu': gpu,
                 'model_name': self.model_name,
                 'test_mode': test_mode,
-                'timestamp': datetime.now().strftime("%m-%d_%H:%M:%S"),
+                'timestamp': datetime.now().strftime("%m-%d_%H:%M:%S %Z"),
                 'hostname': os.uname().nodename,
                 'gpu_count': torch.cuda.device_count(),
                 'cuda_version': torch.version.cuda,
@@ -159,12 +159,12 @@ class ROIBenchmark:
         
         # Log file naming convention: H100_model_test_01-05_001
         month_day = datetime.now().strftime("%m-%d")
-        # model_safe = self.model_name.replace('/', '_').replace('-', '_')
+        model_safe = self.model_name.replace('/', '_').replace('-', '_')
         
         # Add timestamp to log file name
         timestamp = datetime.now().strftime("%H%M%S")  # HHMMSS format
         mode_suffix = "_test" if self.test_mode else ""
-        log_file = log_dir / f"{self.gpu}_{mode_suffix}_{month_day}_{timestamp}.log"
+        log_file = log_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.log"
         
         logging.basicConfig(
             level=logging.INFO,
@@ -207,7 +207,7 @@ class ROIBenchmark:
             self.model_params = sum(p.numel() for p in self.model.parameters())
 
             # Enable gradient checkpointing to save memory
-            self.model.gradient_checkpointing_enable()
+            # self.model.gradient_checkpointing_enable() -- comment out only if inference only not training
             torch.cuda.empty_cache()  # Clear cache after loading
             
             logging.info(f"Model loaded successfully: {self.model_params:,} parameters")
@@ -343,6 +343,7 @@ class ROIBenchmark:
             num_batches = 25  
             batch_size = 16
             max_length = 4096
+        
 
         # Pre-tokenize training data with consistent batch sizes
         logging.info("Pre-tokenizing training data with optimized batches")
@@ -494,7 +495,7 @@ class ROIBenchmark:
         ]
         
         # Test different batch sizes
-        batch_sizes = [1, 4] if self.test_mode else [1, 4, 8]
+        batch_sizes = [1, 4] if self.test_mode else [1, 4, 8, 16, 32]
         inference_results = {}
         
         for batch_size in batch_sizes:
@@ -519,7 +520,7 @@ class ROIBenchmark:
                     return_tensors="pt",
                     padding=True,
                     truncation=True,
-                    max_length=1024
+                    max_length=2048
                 ).to(self.model.device)
                 
                 # Warmup iteration
@@ -541,12 +542,15 @@ class ROIBenchmark:
                 with torch.no_grad():
                     outputs = self.model.generate(
                         inputs.input_ids,
-                        max_new_tokens=256,
+                        max_new_tokens=512,
                         do_sample=False,
                         pad_token_id=self.tokenizer.eos_token_id,
                         eos_token_id=self.tokenizer.eos_token_id,
                         use_cache=True,
-                        attention_mask=inputs.attention_mask
+                        attention_mask=inputs.attention_mask, 
+                        temperature=None,
+                        top_p=None, 
+                        num_beams=1
                     )
                 input_length = inputs.input_ids.shape[1]
                 output_length = outputs.shape[1] - input_length

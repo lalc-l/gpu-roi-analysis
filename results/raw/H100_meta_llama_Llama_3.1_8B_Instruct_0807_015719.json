@@ -1,0 +1,51 @@
+{
+  "metadata": {
+    "gpu": "H100",
+    "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+    "test_mode": false,
+    "timestamp": "08-07_01:48:35",
+    "hostname": "209-20-158-105",
+    "gpu_count": 1,
+    "cuda_version": "12.8",
+    "pytorch_version": "2.9.0.dev20250804+cu128"
+  },
+  "metrics": {
+    "inference": {
+      "batch_1": {
+        "average_throughput_tokens_per_sec": 7.77479635534662,
+        "average_latency_ms_per_token": 130.22701525025897,
+        "cost_per_million_tokens": 96.10826934500578,
+        "performance_per_dollar": 2.890258868158595,
+        "iterations_tested": 9
+      },
+      "batch_4": {
+        "average_throughput_tokens_per_sec": 24.771224780932844,
+        "average_latency_ms_per_token": 40.44346594148212,
+        "cost_per_million_tokens": 30.16492841312318,
+        "performance_per_dollar": 9.208633747558679,
+        "iterations_tested": 9
+      },
+      "batch_8": {
+        "average_throughput_tokens_per_sec": 47.470030106847645,
+        "average_latency_ms_per_token": 21.066763076103395,
+        "cost_per_million_tokens": 15.740925812356585,
+        "performance_per_dollar": 17.646851340835557,
+        "iterations_tested": 9
+      },
+      "batch_16": {
+        "average_throughput_tokens_per_sec": 83.55750404286387,
+        "average_latency_ms_per_token": 11.968065777586567,
+        "cost_per_million_tokens": 8.942610610279925,
+        "performance_per_dollar": 31.062269160915935,
+        "iterations_tested": 9
+      },
+      "batch_32": {
+        "average_throughput_tokens_per_sec": 132.19492794610096,
+        "average_latency_ms_per_token": 7.564748378677501,
+        "cost_per_million_tokens": 5.652427319502626,
+        "performance_per_dollar": 49.14309589074385,
+        "iterations_tested": 9
+      }
+    }
+  }
+}
