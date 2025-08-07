@@ -154,17 +154,17 @@ class ROIBenchmark:
     
     def _setup_logging(self) -> None:
         """Sets up logging configuration for benchmark execution."""
-        log_dir = Path("logs")
+        log_dir = Path("results/reports")
         log_dir.mkdir(exist_ok=True)
         
         # Log file naming convention: H100_model_test_01-05_001
         month_day = datetime.now().strftime("%m-%d")
-        model_safe = self.model_name.replace('/', '_').replace('-', '_')
+        # model_safe = self.model_name.replace('/', '_').replace('-', '_')
         
         # Add timestamp to log file name
         timestamp = datetime.now().strftime("%H%M%S")  # HHMMSS format
         mode_suffix = "_test" if self.test_mode else ""
-        log_file = log_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.log"
+        log_file = log_dir / f"{self.gpu}_{mode_suffix}_{month_day}_{timestamp}.log"
         
         logging.basicConfig(
             level=logging.INFO,
@@ -324,9 +324,7 @@ class ROIBenchmark:
         loss convergence, and calculates financial metrics.
         """
         # Add optimizer for training
-        optimizer = torch.optim.AdamW(self.model.parameters(), lr=1e-4)
-
-
+        optimizer = torch.optim.SGD(self.model.parameters(), lr=1e-3)
 
         logging.info("Starting training benchmark")
         self.model.train()
@@ -337,11 +335,11 @@ class ROIBenchmark:
          # Configure training parameters
         if self.test_mode:
             num_batches = 10
-            batch_size = 16
+            batch_size = 8
             max_length = 2048
         else:
             num_batches = 25  
-            batch_size = 32
+            batch_size = 16
             max_length = 4096
 
         # Pre-tokenize training data with consistent batch sizes
@@ -544,7 +542,9 @@ class ROIBenchmark:
                         max_new_tokens=64,
                         do_sample=False,
                         pad_token_id=self.tokenizer.eos_token_id,
-                        eos_token_id=self.tokenizer.eos_token_id
+                        eos_token_id=self.tokenizer.eos_token_id,
+                        use_cache=True,
+                        attention_mask=inputs.attention_mask
                     )
                 
                 torch.cuda.synchronize()
@@ -618,19 +618,17 @@ class ROIBenchmark:
         """Saves benchmark results to organized structure."""
         
         # Create organized directory structure
-        json_dir = Path("results/json")
-        csv_dir = Path("results/csv") 
-        json_dir.mkdir(parents=True, exist_ok=True)
-        csv_dir.mkdir(parents=True, exist_ok=True)
+        raw_dir = Path("results/raw")
+        raw_dir.mkdir(exist_ok=True)
         
         # Generate filename
-        timestamp = datetime.now().strftime("%m-%d_%H%M%S")
+        timestamp = datetime.now().strftime("%m%d_%H%M%S")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         mode_suffix = "_test" if self.test_mode else ""
         
         # Save to organized locations
-        json_file = json_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.json"
-        csv_file = csv_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.csv"
+        json_file = raw_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.json"
+        csv_file = raw_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.csv"
         
         # Save files
         with open(json_file, 'w') as f:
@@ -707,6 +705,12 @@ class ROIBenchmark:
             'Inference_Tokens_Per_Sec_GPU': repr_inference.get('average_throughput_tokens_per_sec', 0),
             'Inference_Latency_Ms_Per_Token': repr_inference.get('average_latency_ms_per_token', 0),
             
+            # ADD THESE NEW METRICS HERE:
+            'Raw_FLOPS_Per_Second': training_metrics.get('tokens_per_second', 0) * 6 * self.model_params if self.model_params else 0,
+            'Model_Parameters': self.model_params,
+            'Speedup_vs_Baseline': 1.0,  # Calculate manually by comparing CSV files
+            'Eval_Accuracy_Proxy': 100 / max(1, training_metrics.get('perplexity_score', 1)),  # Lower perplexity = higher accuracy
+
             # Cost and ROI metrics
             'Training_Cost_Per_Million_Tokens': training_metrics.get('cost_per_million_tokens', 0),
             'Training_Performance_Per_Dollar': training_metrics.get('performance_per_dollar', 0),

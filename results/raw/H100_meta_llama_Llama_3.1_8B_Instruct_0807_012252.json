@@ -1,0 +1,37 @@
+{
+  "metadata": {
+    "gpu": "H100",
+    "model_name": "meta-llama/Llama-3.1-8B-Instruct",
+    "test_mode": false,
+    "timestamp": "2025-08-07T01:22:09.654422",
+    "hostname": "209-20-158-105",
+    "gpu_count": 1,
+    "cuda_version": "12.8",
+    "pytorch_version": "2.9.0.dev20250804+cu128"
+  },
+  "metrics": {
+    "inference": {
+      "batch_1": {
+        "average_throughput_tokens_per_sec": 53.59448205660464,
+        "average_latency_ms_per_token": 20.027771178219055,
+        "cost_per_million_tokens": 13.942148399401116,
+        "performance_per_dollar": 19.923599277548195,
+        "iterations_tested": 9
+      },
+      "batch_4": {
+        "average_throughput_tokens_per_sec": 197.4554922227668,
+        "average_latency_ms_per_token": 5.0987999679313765,
+        "cost_per_million_tokens": 3.784256461092587,
+        "performance_per_dollar": 73.40352870734826,
+        "iterations_tested": 9
+      },
+      "batch_8": {
+        "average_throughput_tokens_per_sec": 411.93829076875386,
+        "average_latency_ms_per_token": 2.4278295847276845,
+        "cost_per_million_tokens": 1.8139178584922657,
+        "performance_per_dollar": 153.13691106645126,
+        "iterations_tested": 9
+      }
+    }
+  }
+}

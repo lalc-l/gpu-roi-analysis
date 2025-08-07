@@ -1,0 +1,17 @@
+2025-08-07 00:51:49,071 - INFO - Starting benchmark [PRODUCTION]: meta-llama/Llama-3.1-8B-Instruct on H100
+2025-08-07 00:51:49,072 - INFO - Loading model: meta-llama/Llama-3.1-8B-Instruct
+2025-08-07 00:51:52,104 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-07 00:51:55,548 - INFO - Model loaded successfully: 8,030,261,248 parameters
+2025-08-07 00:51:55,550 - INFO - Model device: cuda:0
+2025-08-07 00:51:55,551 - INFO - Starting inference benchmark
+2025-08-07 00:51:55,557 - INFO - Testing inference batch size: 1
+2025-08-07 00:52:10,292 - INFO - Batch 1 - Throughput: 46.1 tok/s, Latency: 23.00 ms/tok
+2025-08-07 00:52:10,294 - INFO - Testing inference batch size: 4
+2025-08-07 00:52:19,570 - INFO - Batch 4 - Throughput: 258.5 tok/s, Latency: 3.87 ms/tok
+2025-08-07 00:52:19,571 - INFO - Testing inference batch size: 8
+2025-08-07 00:52:28,644 - INFO - Batch 8 - Throughput: 518.0 tok/s, Latency: 1.93 ms/tok
+2025-08-07 00:52:28,721 - INFO - Detailed results: results/json/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_005228.json
+2025-08-07 00:52:28,722 - INFO - CSV summary: results/csv/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_005228.csv
+2025-08-07 00:52:28,722 - INFO - ROI benchmark completed successfully
+2025-08-07 00:52:28,724 - INFO - Detailed results: results/json/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_005228.json
+2025-08-07 00:52:28,725 - INFO - Summary for spreadsheet: results/csv/H100_meta_llama_Llama_3.1_8B_Instruct_08-07_005228.csv
