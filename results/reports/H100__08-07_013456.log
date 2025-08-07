@@ -1,0 +1,46 @@
+2025-08-07 01:34:56,740 - INFO - Starting benchmark [PRODUCTION]: meta-llama/Llama-3.1-8B-Instruct on H100
+2025-08-07 01:34:56,741 - INFO - Loading model: meta-llama/Llama-3.1-8B-Instruct
+2025-08-07 01:34:59,855 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-07 01:35:03,283 - INFO - Model loaded successfully: 8,030,261,248 parameters
+2025-08-07 01:35:03,285 - INFO - Model device: cuda:0
+2025-08-07 01:35:03,286 - INFO - Model dtype/quantization: torch.bfloat16
+2025-08-07 01:35:03,289 - INFO - Model memory footprint: 14.96 GB
+2025-08-07 01:35:03,290 - INFO - Starting inference benchmark
+2025-08-07 01:35:03,296 - INFO - Testing inference batch size: 1
+2025-08-07 01:35:11,362 - INFO - Iteration 1: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:15,475 - INFO - Iteration 2: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:19,386 - INFO - Iteration 3: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:23,347 - INFO - Iteration 4: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:27,253 - INFO - Iteration 5: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:31,181 - INFO - Iteration 6: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:35,087 - INFO - Iteration 7: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:38,984 - INFO - Iteration 8: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:42,846 - INFO - Iteration 9: Input=7 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=1
+2025-08-07 01:35:42,847 - INFO - Batch 1 - Throughput: 15.5 tok/s, Latency: 66.36 ms/tok
+2025-08-07 01:35:42,847 - INFO - Testing inference batch size: 4
+2025-08-07 01:35:48,076 - INFO - Iteration 1: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:35:53,077 - INFO - Iteration 2: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:35:58,065 - INFO - Iteration 3: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:03,068 - INFO - Iteration 4: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:08,029 - INFO - Iteration 5: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:13,035 - INFO - Iteration 6: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:17,994 - INFO - Iteration 7: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:22,932 - INFO - Iteration 8: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:27,935 - INFO - Iteration 9: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=4
+2025-08-07 01:36:27,936 - INFO - Batch 4 - Throughput: 51.3 tok/s, Latency: 19.48 ms/tok
+2025-08-07 01:36:27,936 - INFO - Testing inference batch size: 8
+2025-08-07 01:36:33,213 - INFO - Iteration 1: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:36:38,265 - INFO - Iteration 2: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:36:43,340 - INFO - Iteration 3: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:36:48,439 - INFO - Iteration 4: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:36:53,507 - INFO - Iteration 5: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:36:58,662 - INFO - Iteration 6: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:37:03,794 - INFO - Iteration 7: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:37:08,883 - INFO - Iteration 8: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:37:13,986 - INFO - Iteration 9: Input=8 tokens, Output=256 tokens, Model dtype=torch.bfloat16, Batch size=8
+2025-08-07 01:37:13,987 - INFO - Batch 8 - Throughput: 100.4 tok/s, Latency: 9.96 ms/tok
+2025-08-07 01:37:14,027 - INFO - Detailed results: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_0807_013713.json
+2025-08-07 01:37:14,028 - INFO - CSV summary: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_0807_013713.csv
+2025-08-07 01:37:14,029 - INFO - ROI benchmark completed successfully
+2025-08-07 01:37:14,030 - INFO - Detailed results: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_0807_013713.json
+2025-08-07 01:37:14,033 - INFO - Summary for spreadsheet: results/raw/H100_meta_llama_Llama_3.1_8B_Instruct_0807_013713.csv

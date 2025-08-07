@@ -141,7 +141,7 @@ class ROIBenchmark:
                 'gpu': gpu,
                 'model_name': self.model_name,
                 'test_mode': test_mode,
-                'timestamp': datetime.now().isoformat(),
+                'timestamp': datetime.now().strftime("%m-%d_%H:%M:%S"),
                 'hostname': os.uname().nodename,
                 'gpu_count': torch.cuda.device_count(),
                 'cuda_version': torch.version.cuda,
@@ -212,6 +212,8 @@ class ROIBenchmark:
             
             logging.info(f"Model loaded successfully: {self.model_params:,} parameters")
             logging.info(f"Model device: {next(self.model.parameters()).device}")
+            logging.info(f"Model dtype/quantization: {next(self.model.parameters()).dtype}")
+            logging.info(f"Model memory footprint: {torch.cuda.memory_allocated() / 1024**3:.2f} GB")
             
             return True
             
@@ -539,13 +541,18 @@ class ROIBenchmark:
                 with torch.no_grad():
                     outputs = self.model.generate(
                         inputs.input_ids,
-                        max_new_tokens=64,
+                        max_new_tokens=256,
                         do_sample=False,
                         pad_token_id=self.tokenizer.eos_token_id,
                         eos_token_id=self.tokenizer.eos_token_id,
                         use_cache=True,
                         attention_mask=inputs.attention_mask
                     )
+                input_length = inputs.input_ids.shape[1]
+                output_length = outputs.shape[1] - input_length
+                model_dtype = next(self.model.parameters()).dtype
+                logging.info(f"Iteration {iteration}: Input={input_length} tokens, Output={output_length} tokens, "
+                            f"Model dtype={model_dtype}, Batch size={batch_size}")
                 
                 torch.cuda.synchronize()
                 end_time = time.time()
