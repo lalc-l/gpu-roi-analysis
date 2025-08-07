@@ -4,7 +4,8 @@ __pycache__/
 *$py.class
 
 # Environments
-# envs/
+envs/venv-b200/share/
+envs/venv-h100/share/
 
 # Distribution / packaging
 # .Python

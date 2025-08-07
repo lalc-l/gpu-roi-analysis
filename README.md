@@ -24,8 +24,9 @@ Measure the performance of B200 vs H100 over a comprehensive set of open-source 
     - setup a virtual environment 
 
 5. Version Control:
-    - github:
-    - 
+    - github: create a github repo
+    - clone to both GPUs
+    - separate logging and environments from different gpus but everything else you can continue to pull requests
 
 6. Huggingface CLI:
     - run this in terminal: pip install huggingface_hub

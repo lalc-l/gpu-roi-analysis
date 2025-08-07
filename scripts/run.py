@@ -161,14 +161,10 @@ class ROIBenchmark:
         month_day = datetime.now().strftime("%m-%d")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         
-        # Find next counter by checking existing files
-        counter = 1
-        while True:
-            mode_suffix = "_test" if self.test_mode else ""
-            log_file = log_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.log"
-            if not log_file.exists():
-                break
-            counter += 1
+        # Add timestamp to log file name
+        timestamp = datetime.now().strftime("%H%M%S")  # HHMMSS format
+        mode_suffix = "_test" if self.test_mode else ""
+        log_file = log_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.log"
         
         logging.basicConfig(
             level=logging.INFO,
@@ -322,6 +318,8 @@ class ROIBenchmark:
         # Add optimizer for training
         optimizer = torch.optim.AdamW(self.model.parameters(), lr=1e-4)
 
+
+
         logging.info("Starting training benchmark")
         self.model.train()
         
@@ -330,13 +328,13 @@ class ROIBenchmark:
         
          # Configure training parameters
         if self.test_mode:
-            num_batches = 20
-            batch_size = 8
-            max_length = 512
+            num_batches = 10
+            batch_size = 32
+            max_length = 2048
         else:
-            num_batches = 50  
-            batch_size = 16
-            max_length = 1024
+            num_batches = 25  
+            batch_size = 64
+            max_length = 4096
 
         # Pre-tokenize training data with consistent batch sizes
         logging.info("Pre-tokenizing training data with optimized batches")
@@ -392,11 +390,14 @@ class ROIBenchmark:
                 )
                 loss = outputs.loss
             
-            # Backward pass
-            optimizer.zero_grad()
+            # Backward pass with gradient accumulation
+            accumulation_steps = 4
+            loss = loss / accumulation_steps  # Scale loss
             loss.backward()
-            optimizer.step()
 
+            if (i + 1) % accumulation_steps == 0:
+                optimizer.step()
+                optimizer.zero_grad()
             
             # Track metrics
             batch_end = time.time()
@@ -618,21 +619,18 @@ class ROIBenchmark:
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         mode_suffix = "_test" if self.test_mode else ""
 
-        # Find next counter for results files
-        counter = 1
-        while True:
-            json_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.json"
-            csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.csv"
-            if not json_file.exists():
-                break
-            counter += 1
+        # Save results
+        timestamp = datetime.now().strftime("%H%M%S")
+        mode_suffix = "_test" if self.test_mode else ""
+        json_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.json"
+        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
         
         
         with open(json_file, 'w') as f:
             json.dump(self.results, f, indent=2)
         
         # Save CSV summary
-        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{counter:03d}.csv"
+        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
         self._save_csv_summary(csv_file)
         
         logging.info(f"Results saved to: {json_file}")
