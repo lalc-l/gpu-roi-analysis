@@ -1,0 +1,10 @@
+2025-08-07 00:45:57,148 - INFO - Starting benchmark [PRODUCTION]: meta-llama/Llama-3.1-8B-Instruct on H100
+2025-08-07 00:45:57,149 - INFO - Loading model: meta-llama/Llama-3.1-8B-Instruct
+2025-08-07 00:46:00,558 - INFO - We will use 90% of the memory on device 0 for storing the model, and 10% for the buffer to avoid OOM. You can set `max_memory` in to a higher value to use more memory (at your own risk).
+2025-08-07 00:46:04,086 - INFO - Model loaded successfully: 8,030,261,248 parameters
+2025-08-07 00:46:04,087 - INFO - Model device: cuda:0
+2025-08-07 00:46:04,091 - INFO - Starting training benchmark
+2025-08-07 00:46:04,098 - INFO - Pre-tokenizing training data with optimized batches
+2025-08-07 00:46:04,172 - INFO - Created 13 batches of size 32
+2025-08-07 00:46:04,173 - INFO - Running 25 training batches
+2025-08-07 00:46:06,455 - ERROR - Benchmark failed: CUDA out of memory. Tried to allocate 112.00 MiB. GPU 0 has a total capacity of 79.19 GiB of which 11.32 GiB is free. Including non-PyTorch memory, this process has 67.86 GiB memory in use. 67.31 GiB allowed; Of the allocated memory 66.56 GiB is allocated by PyTorch, and 670.30 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

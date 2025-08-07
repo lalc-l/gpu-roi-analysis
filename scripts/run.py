@@ -205,6 +205,10 @@ class ROIBenchmark:
             
             # Calculate model parameters
             self.model_params = sum(p.numel() for p in self.model.parameters())
+
+            # Enable gradient checkpointing to save memory
+            self.model.gradient_checkpointing_enable()
+            torch.cuda.empty_cache()  # Clear cache after loading
             
             logging.info(f"Model loaded successfully: {self.model_params:,} parameters")
             logging.info(f"Model device: {next(self.model.parameters()).device}")
@@ -215,6 +219,10 @@ class ROIBenchmark:
             logging.error(f"Failed to load model: {e}")
             return False
     
+    # Clear memory cache to avoid OOM errors
+    torch.cuda.empty_cache()
+    torch.cuda.set_per_process_memory_fraction(0.85)  # Use 85% of GPU memory
+
     def _calculate_mfu(self, tokens_per_second: float) -> float:
         """Calculates Model FLOPs Utilization (MFU).
         
@@ -329,11 +337,11 @@ class ROIBenchmark:
          # Configure training parameters
         if self.test_mode:
             num_batches = 10
-            batch_size = 32
+            batch_size = 16
             max_length = 2048
         else:
             num_batches = 25  
-            batch_size = 64
+            batch_size = 32
             max_length = 4096
 
         # Pre-tokenize training data with consistent batch sizes
@@ -607,36 +615,65 @@ class ROIBenchmark:
         self.results['metrics']['financial_projections'] = projections
     
     def save_results(self) -> Tuple[str, str]:
-        """Saves benchmark results to JSON and CSV files.
+        """Saves benchmark results to organized structure."""
         
-        Returns:
-            Tuple of (json_file_path, csv_file_path).
-        """
-        results_dir = Path("results/raw")
-        results_dir.mkdir(parents=True, exist_ok=True)
+        # Create organized directory structure
+        json_dir = Path("results/json")
+        csv_dir = Path("results/csv") 
+        json_dir.mkdir(parents=True, exist_ok=True)
+        csv_dir.mkdir(parents=True, exist_ok=True)
         
-        month_day = datetime.now().strftime("%m-%d")
+        # Generate filename
+        timestamp = datetime.now().strftime("%m-%d_%H%M%S")
         model_safe = self.model_name.replace('/', '_').replace('-', '_')
         mode_suffix = "_test" if self.test_mode else ""
-
-        # Save results
-        timestamp = datetime.now().strftime("%H%M%S")
-        mode_suffix = "_test" if self.test_mode else ""
-        json_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.json"
-        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
         
+        # Save to organized locations
+        json_file = json_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.json"
+        csv_file = csv_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{timestamp}.csv"
         
+        # Save files
         with open(json_file, 'w') as f:
             json.dump(self.results, f, indent=2)
         
-        # Save CSV summary
-        csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
         self._save_csv_summary(csv_file)
         
-        logging.info(f"Results saved to: {json_file}")
-        logging.info(f"CSV summary saved to: {csv_file}")
+        logging.info(f"Detailed results: {json_file}")
+        logging.info(f"CSV summary: {csv_file}")
         
         return str(json_file), str(csv_file)
+
+    # def save_results(self) -> Tuple[str, str]:
+    #     """Saves benchmark results to JSON and CSV files.
+        
+    #     Returns:
+    #         Tuple of (json_file_path, csv_file_path).
+    #     """
+    #     results_dir = Path("results/raw")
+    #     results_dir.mkdir(parents=True, exist_ok=True)
+        
+    #     month_day = datetime.now().strftime("%m-%d")
+    #     model_safe = self.model_name.replace('/', '_').replace('-', '_')
+    #     mode_suffix = "_test" if self.test_mode else ""
+
+    #     # Save results
+    #     timestamp = datetime.now().strftime("%H%M%S")
+    #     mode_suffix = "_test" if self.test_mode else ""
+    #     json_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.json"
+    #     csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
+        
+        
+    #     with open(json_file, 'w') as f:
+    #         json.dump(self.results, f, indent=2)
+        
+    #     # Save CSV summary
+    #     csv_file = results_dir / f"{self.gpu}_{model_safe}{mode_suffix}_{month_day}_{timestamp}.csv"
+    #     self._save_csv_summary(csv_file)
+        
+    #     logging.info(f"Results saved to: {json_file}")
+    #     logging.info(f"CSV summary saved to: {csv_file}")
+        
+    #     return str(json_file), str(csv_file)
     
     def _save_csv_summary(self, csv_file: Path) -> None:
         """Saves CSV summary with all key metrics for spreadsheet analysis.
